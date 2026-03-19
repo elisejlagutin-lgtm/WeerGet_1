@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}
+	Идеи пользователей | Реализованных идей - {{ realisation_idea }}
+{% endblock %}
+
+{% block content %}
+  <h1>На этой странице вы предлагаете идеи не только для раздела все о Python, но и всем проекте</h1>
+  {% for idea in ideas %}
+    <div>
+      <table>
+      <div>
+        <p> Автор: {{ idea.author }} </p>
+        <p> Заголовок: {{ idea.title }} </p>
+        <p> Идея - {{ idea.description }} </p>
+        <p> Дата публикации {{ idea.date_post.date }} </p>
+        <p> Реализованно? - {{ idea.realisation }} </p>
+      </div>
+      {% if idea.author == user %}
+        <div>
+          <a href="{% url 'all_about_Python:my_form_edit' idea.id %}">Изменить запись</a>
+          |
+          <a href="{% url 'all_about_Python:my_form_delete' idea.id %}">Удалить запись</a>
+        </div>
+      {% endif %}
+      {% if not forloop.last %}
+        <hr>
+      {% endif %}
+      <table>
+    </div>
+  {% endfor %}
+{% endblock %}

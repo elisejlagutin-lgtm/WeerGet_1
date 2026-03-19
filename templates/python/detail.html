@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}
+	Подробно о посте №{{ details.id }}
+{% endblock %}
+{% block content %}
+	<dev>
+		<h3> На этой странице более подробно описаны посты ===> </h3>
+        <h4> Категория - {{ details.title }}|ID:{{ details.id }} </h3>
+        <h5> {{ details.info|linebreaks }} </h5>
+	</dev>
+{% endblock  %}

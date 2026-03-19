@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}
+  Homepage
+{% endblock %}
+{% block content %}
+<div style="text-align: center;">
+  <h2>Вас приветствует проект WeerGet</h2>
+  <h3>Вы на главной странице раздела всё о Python, тут вы можете посмотреть:</h3>
+  <a href="{% url 'all_about_Python:list' %}">Идеи других пользователей или...</a><br>
+  <a href="{% url 'all_about_Python:my_form_create' %}">Создать свою идею!</a><br>
+  <h3>Либо же посмотреть посты про Python от авторов WeerGet (они ниже).</h3>
+  <hr>
+</div>
+
+<div>
+    {% for post in posts %}
+		  <h4> Категория - <a href="{% url 'all_about_Python:categories' post.category.id %}">
+      {{ post.category.title }}</a>| ID - {{ post.id }} </h4>
+      <h4> Тема - {{ post.title }}</h4>
+      <h4> <a href="{% url 'all_about_Python:detail_post' post.id %}">
+      {{ post.info|truncatewords:4 }}</a></h4>
+      <a href="{% url 'all_about_Python:comment_create' post.id %}">Оставить комментарий</a>
+      {% if not forloop.last %}
+        <hr>
+      {% endif %}
+	{% endfor %}
+</div>
+{% endblock %}
