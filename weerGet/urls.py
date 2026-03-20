@@ -34,6 +34,6 @@ urlpatterns = [
     path('auth/', include('django.contrib.auth.urls')),
     path('about', include('about.urls')),
     path('user/', include('user.urls')),
-    path('<slug:category_slug>/', include('all_about_Python.urls')),
     path('interview/', include('interview.urls')),
+    path('<slug:category_slug>/', include('all_about_Python.urls')),
 ]

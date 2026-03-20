@@ -3,7 +3,7 @@ from .models import Topic_Interview, TheoryOfTopic
 
 # Добавь функцию отрисовывающую главную страницу категории собеседованния
 def home_interview(request):
-    pass
+    return render(request, 'interview/home_interview.html')
 
 
 # Добавь функцию темы для собеседовании, допустим алгоритмы, SCQ, джанго, pytest и т.д
@@ -16,9 +16,4 @@ def topic_interview(request, topic):
         'tesks': tesks,
         'theory': theory_topic,
     }
-    return render(request, 'interview/topic_interview.html')
-
-
-# Добавь функцию для получения заданий по определенной теме
-def task_topic(request, pk):
-    pass
+    return render(request, 'interview/topic_interview.html', context)
