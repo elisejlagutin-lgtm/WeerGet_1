@@ -9,13 +9,15 @@ from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
 from .forms import CommentForm, MetalForm
 from .models import Comment_Model, Model_Form, Post_in_Python
 from django.contrib.auth.mixins import UserPassesTestMixin
+from django.utils import timezone
 
 
 class OnlyAuthorMixin(UserPassesTestMixin):
 
     def test_func(self):
         object = self.get_object()
-        return object.author == self.request.user
+        user = self.request.user
+        return (object.author == user) or user.is_superuser
 
 
 class FormMixin:
@@ -55,10 +57,9 @@ def Comment_Post(request, pk):
             comment = form.save(commit=False)
             comment.post_id = pk
             comment.save()
-            return redirect('all_about_Python:index')
     else:
         form = CommentForm()
-    
+
     context = {'form': form, 'ideas': ideas, 'user': user}
     return render(request, 'forms/form_comment.html', context)
 
@@ -82,6 +83,7 @@ class Form_Edit_View(OnlyAuthorMixin, FormMixin, UpdateView):
 class Form_Create_View(LoginRequiredMixin, FormMixin, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
+        form.instance.date_post = timezone.now()
         response = super().form_valid(form)
         return response
 
@@ -89,7 +91,7 @@ class Form_Delete_View(OnlyAuthorMixin, FormMixin, DeleteView):
     pass
 
 
-class ListView(ListView):
+class IdeaListView(ListView):
     model = Model_Form
     template_name = 'forms/list.html'
     context_object_name = 'ideas'
@@ -99,5 +101,6 @@ class ListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["realisation_idea"] = Model_Form.objects.filter(realisation=True).count()
+
         return context
     

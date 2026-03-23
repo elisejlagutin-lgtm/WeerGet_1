@@ -39,7 +39,7 @@ class Post_in_Python(models.Model):
 class Comment_Model(models.Model):
     author = models.ForeignKey(
         User, verbose_name='Автор записи', on_delete=models.CASCADE, null=True
-    ) 
+    )
     post = models.ForeignKey(
         Post_in_Python,
         null=True,
@@ -55,7 +55,7 @@ class Comment_Model(models.Model):
 class Model_Form(models.Model):
     title = models.CharField('Заголовок:', max_length=MAX_LENGTH_TITLE)
     is_published = models.BooleanField('Опубликовать:', default=True)
-    date_post = models.DateTimeField('Дата публикации:', default=timezone.now)
+    date_post = models.DateTimeField('Дата публикации:')
     description = models.TextField('Детально о идеи:')
     author = models.ForeignKey(
         User, verbose_name='Автор записи', on_delete=models.CASCADE, null=True

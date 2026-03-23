@@ -7,7 +7,7 @@ app_name = 'all_about_Python'
 
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
-    path('list', views.ListView.as_view(), name = 'list'),
+    path('list', views.IdeaListView.as_view(), name = 'list'),
     path('create', views.Form_Create_View.as_view(), name = 'my_form_create'),
     path('<int:pk>/comment', views.Comment_Post, name='comment_create'),
     path('<int:pk>/edit/', views.Form_Edit_View.as_view(), name='my_form_edit'),

@@ -9,13 +9,13 @@
     <div>
       <table>
       <div>
-        <p> Автор: {{ idea.author }} </p>
+        <p> Автор: <a href="{% url 'user:user_page' idea.author.id %}" >{{ idea.author }}</a> </p>
         <p> Заголовок: {{ idea.title }} </p>
         <p> Идея - {{ idea.description }} </p>
         <p> Дата публикации {{ idea.date_post.date }} </p>
         <p> Реализованно? - {{ idea.realisation }} </p>
       </div>
-      {% if idea.author == user %}
+      {% if idea.author == user or user.is_superuser %}
         <div>
           <a href="{% url 'all_about_Python:my_form_edit' idea.id %}">Изменить запись</a>
           |

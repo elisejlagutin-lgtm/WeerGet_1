@@ -1,0 +1,4 @@
+{% for message in messages %}
+    <p> Отправитель - {{ message.recipient }} </p>
+    Сообщение: {{ message.content }}
+{% endfor %}

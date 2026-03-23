@@ -12,26 +12,26 @@ class MetalForm(forms.ModelForm):
         widgets = {
             'date_post': forms.DateInput(attrs={'type': 'date'})
         }
-        fields = ('title', 'description', 'date_post', 'realisation', 'is_published')
+        fields = ('title', 'description', 'realisation', 'is_published')
 
-    def clean_title(self):
-        title = self.cleaned_data['title'].strip()
-        if not title:
-            raise ValidationError('Поле не может быть пустым!')
-        if len(title) <= 3:
-            raise ValidationError('Имя пользователя слишком короткое!')
-        return title
-    
-    def clean(self):
-        super().clean()
-        name = self.cleaned_data['title']
-        send_mail(
-            subject='New Ideas',
-            message=f'Пользователь опубликовал { name } запись!',
-            from_email='birthday_form@acme.not',
-            recipient_list=['admin@acme.not'],
-            fail_silently=True,
-        )
+#    def clean_title(self):
+#        title = self.cleaned_data['title'].strip()
+#        if not title:
+#            raise ValidationError('Поле не может быть пустым!')
+#        if len(title) <= 3:
+#            raise ValidationError('Заголовок слишком короткий!')
+#        return title
+#   
+#    def clean(self):
+#        super().clean()
+#        name = self.cleaned_data['title']
+#        send_mail(
+#            subject='New Ideas',
+#            message=f'Пользователь { name } опубликовал запись!',
+#            from_email='birthday_form@acme.not',
+#            recipient_list=['admin@acme.not'],
+#            fail_silently=True,
+#        )
 
 
 class CommentForm(forms.ModelForm):
@@ -41,4 +41,3 @@ class CommentForm(forms.ModelForm):
         widgets = {
             'text': forms.Textarea({'cols': '100', 'rows': '3'})
         }
-        

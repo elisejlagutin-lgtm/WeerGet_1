@@ -1,8 +1,8 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from .models import MyUser
+from .models import Message
 
-class MyUserCreationForm(UserCreationForm):
+
+class MessageCreate(forms.ModelForm):
     class Meta:
-        model = MyUser
-        fields = ('username', 'email', 'bio')
+        model = Message
+        fields = ('content',)
