@@ -1,15 +1,14 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.utils import timezone
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   UpdateView)
 
-from .forms import CommentForm, MetalForm
-from .models import Comment_Model, Model_Form, Post_in_Python
-from django.contrib.auth.mixins import UserPassesTestMixin
-from django.utils import timezone
+from .forms import CommentForm, IdeaForm
+from .models import Comment_Model, Idea, Post_in_Python
 
 
 class OnlyAuthorMixin(UserPassesTestMixin):
@@ -21,21 +20,22 @@ class OnlyAuthorMixin(UserPassesTestMixin):
 
 
 class FormMixin:
-    model = Model_Form
-    form_class = MetalForm
-    template_name = 'forms/form_ideas.html'
-    context_object_name = 'form'
-    success_url = reverse_lazy('all_about_Python:list')
+    model = Idea
+    form_class = IdeaForm
+    template_name = 'forms/crud_idea.html'
+    success_url = reverse_lazy('all_about_Python:list_idea')
+
 
 # Класс для главной страницы
-class IndexView(ListView):
+class HomeView(ListView):
     model = Post_in_Python
-    template_name = 'python/index.html'
+    template_name = 'python/home.html'
     context_object_name = 'posts'
     queryset = Post_in_Python.objects.filter(is_published=True)[:5]
 
+
 # Класс для страницы категории
-class Categories_View(ListView):
+class CategoriesView(ListView):
     model = Post_in_Python
     template_name = 'python/category.html'
     context_object_name = 'posts'
@@ -44,11 +44,11 @@ class Categories_View(ListView):
         return Post_in_Python.objects.filter(
             is_published=True,
             category__id=self.kwargs['pk']
-        )
+        ).select_related('category')
 
 
 @login_required
-def Comment_Post(request, pk):
+def сomment_post(request, pk):
     ideas = Comment_Model.objects.filter(post__pk=pk)
     user = request.user
     if request.method == 'POST':
@@ -61,12 +61,12 @@ def Comment_Post(request, pk):
         form = CommentForm()
 
     context = {'form': form, 'ideas': ideas, 'user': user}
-    return render(request, 'forms/form_comment.html', context)
+    return render(request, 'forms/comments.html', context)
 
 
 class PostDetailView(DetailView):
     model = Post_in_Python
-    template_name = 'python/detail.html'
+    template_name = 'python/detail_post.html'
     context_object_name = 'details'
 
     def get_queryset(self):
@@ -76,31 +76,31 @@ class PostDetailView(DetailView):
         )
 
 
-class Form_Edit_View(OnlyAuthorMixin, FormMixin, UpdateView):
+class IdeaEditView(OnlyAuthorMixin, FormMixin, UpdateView):
     pass
 
 
-class Form_Create_View(LoginRequiredMixin, FormMixin, CreateView):
+class IdeaCreateView(LoginRequiredMixin, FormMixin, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         form.instance.date_post = timezone.now()
         response = super().form_valid(form)
         return response
 
-class Form_Delete_View(OnlyAuthorMixin, FormMixin, DeleteView):
+
+class IdeaDeleteView(OnlyAuthorMixin, FormMixin, DeleteView):
     pass
 
 
 class IdeaListView(ListView):
-    model = Model_Form
-    template_name = 'forms/list.html'
+    model = Idea
+    template_name = 'forms/list_idea.html'
     context_object_name = 'ideas'
     def get_queryset(self):
-        return Model_Form.objects.order_by('-date_post')
-    
+        return Idea.objects.order_by('-realisation')
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["realisation_idea"] = Model_Form.objects.filter(realisation=True).count()
+        context["realisation_idea"] = Idea.objects.filter(realisation=True).count()
 
         return context
-    

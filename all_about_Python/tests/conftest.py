@@ -1,8 +1,7 @@
 import pytest
 from django.test import Client
-import datetime
 from django.utils import timezone
-from all_about_Python.models import Post_in_Python, Category, Model_Form
+from python.models import Post_in_Python, Category, Idea
 
 @pytest.fixture
 def author(django_user_model):
@@ -50,10 +49,11 @@ def post(category, author):
 
 @pytest.fixture
 def idea_user(author):
-    return Model_Form.objects.create(
+    return Idea.objects.create(
         title='TitleIdea',
         description='Description',
         author=author,
+        date_post=timezone.now(),
         realisation=True
     )
 

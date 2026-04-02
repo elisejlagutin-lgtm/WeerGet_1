@@ -40,10 +40,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'all_about_Python.apps.AllAboutPythonConfig',
+    'all_about_python.apps.AllAboutPythonConfig',
     'about.apps.AboutConfig',
+    'api.apps.ApiConfig',
     'user.apps.UserConfig',
     'interview.apps.InterviewConfig',
+    'rest_framework',
+]
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
 ]
 
 MIDDLEWARE = [
@@ -80,6 +85,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'weerGet.wsgi.application'
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.UserRateThrottle',
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.ScopedRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'user': '10000/day',  # Лимит для UserRateThrottle.
+        'anon': '1000/day',
+        'low_request': '1/minute',  # Лимит для AnonRateThrottle.
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -126,7 +150,7 @@ TIME_ZONE = 'UTC'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

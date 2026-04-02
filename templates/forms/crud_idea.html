@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}
+	Создание, изменение или удаление идеи. 
+{% endblock %}
+{% block content %}
+  <dev>
+    {% with data=object %}
+    {% if '/edit/' in request.path %}
+      <h2>Редактировать идею №{{ data.id }}</h2>
+    {% elif '/delete/' in request.path %}
+      <h2>Удалить идею №{{ data.id }} </h2>
+    {% else %}
+      <h2>Создай свою идею!</h2>
+    {% endif %}
+    <form method='post'>
+      <table>
+        {% csrf_token %}
+        {% if not '/delete/' in request.path %}
+          {{ form.as_p }}
+        {% else %}
+          <p> Идея: {{ data.title }} </p>
+          <p> Предложение: {{ data.description }} </p>
+        {% endif %}
+      </table>
+      <input type='submit' value='Отправить'>
+    </form>
+    {% endwith %}
+  </dev>
+{% endblock %}

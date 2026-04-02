@@ -6,13 +6,16 @@
     <div style="text-align: center;">
         <p> Пользователь: {{ user.username }} </p>
         <p> Email: {{ user.email }} </p>
-        <p> Был последний раз в {{ user.last_login }} </p>
+        <p> Был последний раз в {{ user.last_login.time }} </p>
         {% if request.user == user %}
-            <a href="{% url 'password_change' %}" >Поменять пароль</a>
-            <form method="post" action="{% url 'logout' %}" >
+            <a href="{% url 'user:read_message' %}"> Мои сообщения </a>
+            <a href="{% url 'admin:password_change' %}" >Поменять пароль</a>
+            <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
                 <button type="submit" class="nav-link">Выйти</button>
             </form>
+        {% else %}
+            <a href="{% url 'user:send_message' recipient_id=user.id %}">Написать сообщение</a>
         {% endif %}
     </div>
     <div>
@@ -22,4 +25,4 @@
             <p> {{ post_user.description }} Опубликованно в {{ post_user.date_post }} </p>
         {% endfor %}
     </div>
-{% endblock  %}
+{% endblock %}

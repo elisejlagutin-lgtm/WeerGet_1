@@ -3,11 +3,16 @@
     Отправка сообщения
 {% endblock title %}
 {% block content %}
-    <form method='post'>
-        <table>
-            {% csrf_token %}
-            {{ form.as_p }}
-        </table>
-        <input type='submit' value='Отправить'>
-    </form>
+    <div id="comment-form-container" style="position: fixed; bottom: 20px; left: 40%; transform: translateX(-30%);">
+        <form method='post'>
+            <table>
+                {% csrf_token %}
+                {{ form.as_p }}
+            </table>
+            <input type='submit' value='Отправить'>
+        </form>
+    </div>
+    {% for message in messages %}
+        Сообщение: {{ message.content }}
+    {% endfor %}
 {% endblock content %}

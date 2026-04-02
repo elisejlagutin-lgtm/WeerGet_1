@@ -6,9 +6,9 @@ import pytest
 @pytest.mark.parametrize(
     'name, status',
     (
-        ('all_about_Python:list', HTTPStatus.OK),
-        ('all_about_Python:my_form_create', HTTPStatus.FOUND),
-        ('all_about_Python:index', HTTPStatus.OK),
+        ('all_about_Python:list_idea', HTTPStatus.OK),
+        ('all_about_Python:idea_create', HTTPStatus.FOUND),
+        ('all_about_Python:home', HTTPStatus.OK),
     )
 )
 def test_anonumos_user(db, name, status, client):
@@ -35,13 +35,13 @@ def test_item_routes_anonumos(db, name, client, pk):
 @pytest.mark.parametrize(
     'name',
     (
-        ('all_about_Python:my_form_edit'),
-        ('all_about_Python:my_form_delete'),
+        ('all_about_Python:idea_edit'),
+        ('all_about_Python:idea_delete'),
     )
 )
 def test_author_response(name, idea_user, client_author):
     url = reverse(name, args=(idea_user.id,))
-    if name == 'all_about_Python:my_form_edit':
+    if name == 'all_about_Python:idea_edit':
         response = client_author.post(
             url,
             data={
@@ -61,13 +61,13 @@ def test_author_response(name, idea_user, client_author):
 @pytest.mark.parametrize(
     'name',
     (
-        ('all_about_Python:my_form_edit'),
-        ('all_about_Python:my_form_delete'),
+        ('all_about_Python:idea_edit'),
+        ('all_about_Python:idea_delete'),
     )
 )
 def test_reader_response(name, idea_user, client_reader):
     url = reverse(name, args=(idea_user.id,))
-    if name == 'all_about_Python:my_form_edit':
+    if name == 'all_about_Python:idea_edit':
         response = client_reader.post(
             url,
             data={

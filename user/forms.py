@@ -5,4 +5,4 @@ from .models import Message
 class MessageCreate(forms.ModelForm):
     class Meta:
         model = Message
-        fields = ('content',)
+        fields = ('content', 'is_anonymous')

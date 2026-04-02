@@ -2,7 +2,6 @@ from django.db import models
 
 MAX_LENGTH_TITLE = 123
 from django.contrib.auth import get_user_model
-from django.utils import timezone
 
 
 class Category(models.Model):
@@ -52,13 +51,13 @@ class Comment_Model(models.Model):
         return f"Комментарий к {self.post}"
 
 
-class Model_Form(models.Model):
+class Idea(models.Model):
     title = models.CharField('Заголовок:', max_length=MAX_LENGTH_TITLE)
     is_published = models.BooleanField('Опубликовать:', default=True)
     date_post = models.DateTimeField('Дата публикации:')
     description = models.TextField('Детально о идеи:')
     author = models.ForeignKey(
-        User, verbose_name='Автор записи', on_delete=models.CASCADE, null=True
+        User, verbose_name='Автор записи', on_delete=models.CASCADE,
     )
     realisation = models.BooleanField(
         'Реализация:',

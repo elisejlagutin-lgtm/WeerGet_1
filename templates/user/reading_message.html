@@ -1,4 +1,9 @@
-{% for message in messages %}
-    <p> Отправитель - {{ message.recipient }} </p>
-    Сообщение: {{ message.content }}
-{% endfor %}
+{% extends "base.html" %}
+{% block title %} Сообщения {% endblock title %}
+{% block content %}
+    {% for message in messages %}
+        <p> Отправитель - {{ message.sender }} </p>
+        Сообщение: {{ message.content }}
+        <a href="{% url 'user:send_message' recipient_id=user.id %}" > Ответить </a>
+    {% endfor %}
+{% endblock content %}

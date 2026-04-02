@@ -11,6 +11,7 @@ class TheoryOfTopic(models.Model):
 class TaskInterviews(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField()
+    answer_problem = models.TextField(max_length=20)
     problem_solving = models.TextField()
 
 

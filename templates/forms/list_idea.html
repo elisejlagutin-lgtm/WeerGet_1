@@ -17,9 +17,9 @@
       </div>
       {% if idea.author == user or user.is_superuser %}
         <div>
-          <a href="{% url 'all_about_Python:my_form_edit' idea.id %}">Изменить запись</a>
+          <a href="{% url 'all_about_Python:idea_edit' idea.id %}">Изменить запись</a>
           |
-          <a href="{% url 'all_about_Python:my_form_delete' idea.id %}">Удалить запись</a>
+          <a href="{% url 'all_about_Python:idea_delete' idea.id %}">Удалить запись</a>
         </div>
       {% endif %}
       {% if not forloop.last %}
